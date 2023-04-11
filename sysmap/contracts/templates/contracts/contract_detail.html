@@ -1,0 +1,163 @@
+{% extends 'contracts/base.html' %}
+{% load l10n %}
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"> FICHE DESCRIPTIVE DU MARCHE / CONTRAT</h1>
+    </div>
+    <div class="row"> 
+        <div class="col-sm-4">
+            {% include "contracts/contract_summary.html" %}
+                                <!-- Basic Card Example -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-body">
+                                        <h6 class="m-0 font-weight-bold text-primary">LOCALITE</h6>
+                                        {% if contract.localization %}
+                                        <h6 class="m-0 font-weight-bold text-primary"> ARRONDISSEMENT :</h6><p>{{ contract.localization }}</p>
+                                        <h6 class="m-0 font-weight-bold text-primary"> DEPARTEMENT: </h6><p>{{ contract.localization  }}</p>
+                                        <h6 class="m-0 font-weight-bold text-primary"> REGION: </h6><p>{{ contract.localization  }}</p>
+                                        {% else %} PAS D'INFORMATIONS {% endif %}
+                                    </div>
+                                </div>
+        </div>
+
+        <div class="col-sm-4">
+            <!-- Dropdown Card Example -->
+            <div class="card shadow mb-4">         
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">MONTANTS</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Actions</div>
+                            <a class="dropdown-item" href="{% url 'contract-add-amount' contract.id %}">Ajouter</a>
+                            {% if contract.montant %}
+                            <a class="dropdown-item" href="{% url 'contract-upd-amount' contract.id contract.montant.id %}">Modifier</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">        
+                    {% if contract.montant %}
+                    <h6> MONTANT HT: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtHtax }}</span></h6>
+                    <h6> MONTANT TVA: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtTva }}</span></h6>
+                    <h6> MONTANT AIR: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtAir }}</span></h6>
+                    <h6> MONTANT NET: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtNet }}</span></h6>
+                    <h6> MONTANT TTC: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtTtc }}</span></h6>
+                    {% else %} PAS D'INFORMATIONS {% endif %}
+                </div>
+            </div>
+
+            <!-- Dropdown Card Example -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">FINANCEMENT</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Actions</div>
+                            <a class="dropdown-item" href="{% url 'contract-add-finance' contract.id %}">Ajouter</a>
+                            {% if contract.financement %}
+                            <a class="dropdown-item" href="{% url 'contract-upd-finance' contract.id contract.financement.id %}">Modifier</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% if contract.financement %}
+                    <h6> SOURCE: <span class="m-0 font-weight-bold text-primary">{{ contract.financement.get_source_display }}</span></h6>
+                    <h6> GUICHET: <span class="m-0 font-weight-bold text-primary">{{ contract.financement.guichet }}</span></h6>
+                    <h6> IMPUTATION: <span class="m-0 font-weight-bold text-primary">{{ contract.financement.imputation }}</span></h6>
+                    {% else %} PAS D'INFORMATIONS {% endif %}
+                </div>
+            </div>
+        </div>
+ 
+        <div class="col-sm-4">
+
+            <!-- Dropdown Card Example -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">TITULAIRE</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Actions</div>
+                            <a class="dropdown-item" href="{% url 'contract-add-holder' contract.id %}">Ajouter</a>
+                            {% if contract.holder %}
+                            <a class="dropdown-item" href="{% url 'contract-add-holder' contract.id %}">Modifier</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% if contract.holder %}
+                    <h6> RAISON SOCIALE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.raisonSociale }}</span></h6>
+                    <h6> BOITE POSTALE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.poBox }}</span></h6>
+                    <h6> TELEPHONE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.phone }}</span></h6>
+                    <h6> NUMERO CONTRIBUABLE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.numContribuable }}</span></h6>
+                    <h6> COMPTE BANCAIRE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.compteBancaire }}</span></h6>
+                    {% else %} PAS D'INFORMATIONS {% endif %}
+                </div>
+            </div>
+
+                        <!-- Dropdown Card Example -->
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">COMMISSION DE RECETTE</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                        <div class="dropdown-header">Actions</div>
+                                        <a class="dropdown-item" href="{% url 'contract-add-commission' contract.id %}">Ajouter</a>
+                                        {% if contract.commission %}
+                                        <a class="dropdown-item" href="{% url 'contract-add-commission' contract.id %}">Modifier</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                {% if contract.commission %}
+                                <h6> PRESIDENT: <span class="m-0 font-weight-bold text-primary">{{ contract.commission.president }}</span></h6>
+                                <h6> CHEF DE SERVICE: <span class="m-0 font-weight-bold text-primary">{{ contract.commission.csm }}</span></h6>
+                                <h6> INGENIEUR: <span class="m-0 font-weight-bold text-primary">{{ contract.commission.engineer }}</span></h6>
+                                <h6> COMPTABLE-MATIERES: <span class="m-0 font-weight-bold text-primary">{{ contract.commission.comptable }}</span></h6>
+                                {% else %} PAS D'INFORMATIONS {% endif %}
+                            </div>
+                        </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="col-sm-4">
+    <p>
+        <a href="{% url 'contract-list' %}" class="btn bg-gradient-warning btn-block">Retour à la liste des contrats</a>
+    </p>
+</div>
+
+{% endblock %}

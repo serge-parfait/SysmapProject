@@ -1,0 +1,39 @@
+{% extends 'contracts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"> FICHE DESCRIPTIVE DU MARCHE / CONTRAT</h1>
+    </div>
+    <div class="row"> 
+        <div class="col-sm-4">
+            {% include "contracts/contract_summary.html" %}
+        </div>
+        <div class="col-sm-8">         
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h6 class="m-0 font-weight-bold text-primary"> AJOUT MONTANT DU MARCHE:</h6>
+                    <form action="" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>        
+                    </form>
+                </div>
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+
+<div class="col-sm-4">
+    <p>
+        <a href="{% url 'contract-detail' contract.id %}" class="btn btn-primary btn-block">Retour à la fiche descriptive du contrat</a>
+    </p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+            <!-- Dropdown Card Example -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Numéro : {{ contract.numero }}</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Actions</div>
+                            <a class="dropdown-item" href="{% url 'contract-update' contract.id %}">Modifier</a>
+                            <a class="dropdown-item" href="{% url 'contract-disable' contract.id %}">Désactiver</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'contract-print' contract.id %}">Imprimer</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h6> MODE PASSATION: <span class="m-0 font-weight-bold text-primary">{{ contract.get_typePassation_display }}</span></h6>
+                    <h6> OBJET: <span class="m-0 font-weight-bold text-primary">{{ contract.object }}</span></h6>
+                    <h6> DELAI: <span class="m-0 font-weight-bold text-primary">{{ contract.delays }}</span></h6>
+                    <h6> LIEU: <span class="m-0 font-weight-bold text-primary">{{ contract.lieuLivraison }}</span></h6>
+                    <h6> CONSISTANCE: <span class="m-0 font-weight-bold text-primary">{{ contract.consistancy }}</span></h6>
+                    <h6> NUMERO DU LOT: <span class="m-0 font-weight-bold text-primary">{{ contract.numLot }}</span></h6>
+                    <h6> CONTRAT ENREGISTRE?: <span class="m-0 font-weight-bold text-primary">{{ contract.storedTaxation|yesno:"OUI, NON" }}</span></h6>
+                </div>
+            </div>

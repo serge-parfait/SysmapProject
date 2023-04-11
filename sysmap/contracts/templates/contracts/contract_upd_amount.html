@@ -1,0 +1,66 @@
+{% extends 'contracts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"> FICHE DESCRIPTIVE DU MARCHE / CONTRAT</h1>
+    </div>
+    <div class="row"> 
+        <div class="col-sm-4">
+
+            <!-- Dropdown Card Example -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary">Numéro : {{ contract.numero }}</h5>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Actions</div>
+                            <a class="dropdown-item" href="{% url 'contract-update' contract.id %}">Modifier</a>
+                            <a class="dropdown-item" href="{% url 'contract-disable' contract.id %}">Désactiver</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'contract-print' contract.id %}">Imprimer</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h6 class="m-0 font-weight-bold text-primary"> OBJET: </h6><p>{{ contract.object }}</p>
+                    <h6 class="m-0 font-weight-bold text-primary"> DELAI: </h6><p>{{ contract.delays }}</p>
+                    <h6 class="m-0 font-weight-bold text-primary"> LIEU: </h6><p>{{ contract.lieuLivraison }}</p>
+                    <h6 class="m-0 font-weight-bold text-primary"> CONSISTANCE: </h6><p>{{ contract.consistancy }}</p>
+                    <h6 class="m-0 font-weight-bold text-primary"> LOT N°: </h6><p>{{ contract.numLot }}</p>
+                    <h6 class="m-0 font-weight-bold text-primary"> ENREGISTRE?: </h6><p>{{ contract.storedTaxation|yesno:"OUI, NON" }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">         
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h6 class="m-0 font-weight-bold text-primary"> MODIFICATION MONTANT DU MARCHE:</h6>
+                    <form action="" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>        
+                    </form>
+                </div>
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+
+<p><a href="{% url 'contract-detail' contract.id %}">Retour aux détails du contrat</a></p>
+
+{% endblock %}
