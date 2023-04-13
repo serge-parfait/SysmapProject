@@ -1,11 +1,14 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from contracts.models import Contract, Montant, Financement
 from contracts.forms import ContractForm, MontantForm, FinanceForm, HolderForm, CommissionForm
 
+@login_required
 def welcome(request):
     return render(request, 'contracts/welcome.html')
 
+@login_required
 def contract_list(request):
     contracts = Contract.objects.all()
     return render(
@@ -14,6 +17,7 @@ def contract_list(request):
         {'contracts':contracts}
     )
 
+@login_required
 def contract_detail(request, id):
     contract = Contract.objects.get(id=id)
     return render(
@@ -22,6 +26,7 @@ def contract_detail(request, id):
         {'contract':contract}
     )
 
+@login_required
 def montant_detail(request, id):
     contract = Contract.objects.get(id=id)
     return render(
@@ -30,6 +35,7 @@ def montant_detail(request, id):
         {'contract':contract}
     )
 
+@login_required
 def contract_create(request):
     if request.method == 'POST':
         form = ContractForm(request.POST)
@@ -43,6 +49,7 @@ def contract_create(request):
                   'contracts/contract_create.html',
                  {'form': form})
 
+@login_required
 def contract_update(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
@@ -57,6 +64,7 @@ def contract_update(request, id):
                   'contracts/contract_update.html',
                   {'form':form})
 
+@login_required
 def contract_disable(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
@@ -67,6 +75,7 @@ def contract_disable(request, id):
                   'contracts/contract_disable.html',
                   {'contract': contract})
 
+@login_required
 def contract_print(request, id):
     contract = Contract.objects.get(id=id)
     contract.actif = False
@@ -74,6 +83,7 @@ def contract_print(request, id):
     
     return redirect('contract_list')
 
+@login_required
 def contract_amount(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
@@ -90,6 +100,7 @@ def contract_amount(request, id):
                  {'form': form, 
                   'contract': contract})
 
+@login_required
 def contract_upd_amount(request, id1, id2):
     montant = Montant.objects.get(id=id1)
     contract = Contract.objects.get(id=id2)
@@ -106,6 +117,7 @@ def contract_upd_amount(request, id1, id2):
                  {'form': form, 
                   'contract': contract})
 
+@login_required
 def contract_finance(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
@@ -122,7 +134,7 @@ def contract_finance(request, id):
                   {'form': form,
                   'contract': contract})
         
-
+@login_required
 def contract_upd_finance(request, id1, id2):
     financement = Financement.objects.get(id=id1)
     contract = Contract.objects.get(id=id2)
@@ -139,6 +151,7 @@ def contract_upd_finance(request, id1, id2):
                  {'form': form, 
                   'contract': contract})
 
+@login_required
 def contract_holder(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
@@ -155,6 +168,7 @@ def contract_holder(request, id):
                   {'form': form,
                   'contract': contract})
 
+@login_required
 def contract_commission(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
