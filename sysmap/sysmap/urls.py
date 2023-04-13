@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from contracts import views
 
+import authentication.views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', authentication.views.login_page, name='login'),
+    path('logout/', authentication.views.logout_user, name='logout'),
     path('welcome/', views.welcome, name='home'),
     path('contracts/', views.contract_list, name='contract-list'),
     path('contract/<int:id>', views.contract_detail, name='contract-detail'),
