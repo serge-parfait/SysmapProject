@@ -2,7 +2,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Numéro : {{ contract.numero }}</h6>
+                    <h6 class="m-0 font-weight-bold text-danger">Numéro : {{ contract.numero }}</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,11 +21,18 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <h6> MODE PASSATION: <span class="m-0 font-weight-bold text-primary">{{ contract.get_typePassation_display }}</span></h6>
-                    <h6> OBJET: <span class="m-0 font-weight-bold text-primary">{{ contract.object }}</span></h6>
+                    <!-- Divider -->
+                    <hr class="sidebar-divider">
+                    <h6> OBJET: <span class="m-0 font-weight-bold text-danger">{{ contract.object }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> DELAI: <span class="m-0 font-weight-bold text-primary">{{ contract.delays }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> LIEU: <span class="m-0 font-weight-bold text-primary">{{ contract.lieuLivraison }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> CONSISTANCE: <span class="m-0 font-weight-bold text-primary">{{ contract.consistancy }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> NUMERO DU LOT: <span class="m-0 font-weight-bold text-primary">{{ contract.numLot }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> CONTRAT ENREGISTRE?: <span class="m-0 font-weight-bold text-primary">{{ contract.storedTaxation|yesno:"OUI, NON" }}</span></h6>
                 </div>
             </div>

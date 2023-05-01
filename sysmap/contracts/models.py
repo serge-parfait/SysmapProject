@@ -103,26 +103,3 @@ class Contract(models.Model):
 
     def __str__(self):
         return f'self.object'
-
-class Livrable(models.Model):
-    class Nature(models.TextChoices):
-        FOURNITURES = 'FO'
-        TRAVAUX = 'TR'
-        SCES_QUANTIFIABLE = 'SQ'
-        PRES_INTELLECTUELLE = 'PI'
-        CONCEPT_REALISATION = 'CR'
-        ACCORD_CADRE = 'AC'
-        PLURIANNUEL_TRANCHE = 'PT'
-        RESERVE = 'RE'
-        SPECIAL = 'SP'
-    nature = models.fields.CharField(choices=Nature.choices, max_length=2, default='TR')
-    libelle = models.fields.CharField(max_length=200)
-    class TypeLivrable(models.TextChoices):
-        IMPREVU = 'I'
-        ATTENDU = 'A'
-    typeLivrable = models.fields.CharField(choices=TypeLivrable.choices ,max_length=1, default='A') 
-    isRealized = models.fields.BooleanField(default=False)
-    contract = models.ForeignKey(Contract, null=True, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.libelle)

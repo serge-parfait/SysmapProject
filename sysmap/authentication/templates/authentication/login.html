@@ -31,18 +31,23 @@
         <div class="row justify-content-center">
 
             <div class="col-xl-10 col-lg-12 col-md-9">
-
+                
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
+                            <div class="col-lg-12">
+                                <h1 class="h1 mb-2 text-center text-gray-800">Système de Suivi des Marchés Publics - SYSMAP</h1>
+                            </div>
+                            
                             <div class="col-lg-6">
-                              
+                                <img src="{% static 'contracts/img/logo_m.jpeg' %}">
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">{{ message }}Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h2>{{ message }} </h2>
                                     </div>
                                     <form method="POST">
                                         {{ form.as_p }}

@@ -4,8 +4,23 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800"> FICHE DESCRIPTIVE DU MARCHE / CONTRAT</h1>
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800"> DETAILS DESCRIPTIFS DU MARCHE / CONTRAT</h1>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'contract-list' %}" class="btn btn-primary btn-block">Liste des contrats</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'follow-tech-contract' contract.id %}" class="btn btn-primary btn-block">Suivi Technique</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'follow-tech-contract' contract.id %}" class="btn btn-primary btn-block">Suivi Financier</a>
+        </div>   
+           
     </div>
     <div class="row"> 
         <div class="col-sm-4">
@@ -13,8 +28,8 @@
                                 <!-- Basic Card Example -->
                                 <div class="card shadow mb-4">
                                     <div class="card-body">
-                                        <h6 class="m-0 font-weight-bold text-primary">LOCALITE</h6>
                                         {% if contract.localization %}
+                                        <h6 class="m-0 font-weight-bold text-primary">LOCALITE</h6>
                                         <h6 class="m-0 font-weight-bold text-primary"> ARRONDISSEMENT :</h6><p>{{ contract.localization }}</p>
                                         <h6 class="m-0 font-weight-bold text-primary"> DEPARTEMENT: </h6><p>{{ contract.localization  }}</p>
                                         <h6 class="m-0 font-weight-bold text-primary"> REGION: </h6><p>{{ contract.localization  }}</p>
@@ -50,7 +65,8 @@
                     <h6> MONTANT TVA: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtTva }}</span></h6>
                     <h6> MONTANT AIR: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtAir }}</span></h6>
                     <h6> MONTANT NET: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtNet }}</span></h6>
-                    <h6> MONTANT TTC: <span class="m-0 font-weight-bold text-primary">{{ contract.montant.mtTtc }}</span></h6>
+                    <hr class="sidebar-divider">
+                    <h6> MONTANT TTC: <span class="m-0 font-weight-bold text-danger">{{ contract.montant.mtTtc }}</span></h6>
                     {% else %} PAS D'INFORMATIONS {% endif %}
                 </div>
             </div>
@@ -80,6 +96,7 @@
                     {% if contract.financement %}
                     <h6> SOURCE: <span class="m-0 font-weight-bold text-primary">{{ contract.financement.get_source_display }}</span></h6>
                     <h6> GUICHET: <span class="m-0 font-weight-bold text-primary">{{ contract.financement.guichet }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> IMPUTATION: <span class="m-0 font-weight-bold text-primary">{{ contract.financement.imputation }}</span></h6>
                     {% else %} PAS D'INFORMATIONS {% endif %}
                 </div>
@@ -111,7 +128,8 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     {% if contract.holder %}
-                    <h6> RAISON SOCIALE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.raisonSociale }}</span></h6>
+                    <h6> RAISON SOCIALE: <span class="m-0 font-weight-bold text-danger">{{ contract.holder.raisonSociale }}</span></h6>
+                    <hr class="sidebar-divider">
                     <h6> BOITE POSTALE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.poBox }}</span></h6>
                     <h6> TELEPHONE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.phone }}</span></h6>
                     <h6> NUMERO CONTRIBUABLE: <span class="m-0 font-weight-bold text-primary">{{ contract.holder.numContribuable }}</span></h6>
@@ -152,12 +170,6 @@
         </div>
 
     </div>
-</div>
-
-<div class="col-sm-4">
-    <p>
-        <a href="{% url 'contract-list' %}" class="btn bg-gradient-warning btn-block">Retour à la liste des contrats</a>
-    </p>
 </div>
 
 {% endblock %}

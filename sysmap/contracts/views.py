@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from contracts.models import Contract, Montant, Financement
 from contracts.forms import ContractForm, MontantForm, FinanceForm, HolderForm, CommissionForm
@@ -29,6 +28,7 @@ def contract_detail(request, id):
 @login_required
 def montant_detail(request, id):
     contract = Contract.objects.get(id=id)
+   #livrable = Livrable.objects.filter(contract=contract)
     return render(
         request,
         'contracts/contract_detail.html',
@@ -40,7 +40,6 @@ def contract_create(request):
     if request.method == 'POST':
         form = ContractForm(request.POST)
         if form.is_valid():
-            print(f'le formulaire est valide')
             contract = form.save()
             return redirect('contract-detail', contract.id)
     else:

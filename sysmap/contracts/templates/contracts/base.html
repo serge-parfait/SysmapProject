@@ -14,12 +14,12 @@
 
         <!-- Custom fonts for this template-->
         <link href="{% static 'contracts/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+        
         <!-- Custom styles for this template-->
         <link href="{% static 'contracts/css/sb-admin-2.min.css' %}" rel="stylesheet">
+        <link href="{% static 'contracts/css/jquery.dataTables.min.css' %}" rel="stylesheet">
 
     </head>
 
@@ -31,7 +31,7 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -145,7 +145,7 @@
                 <!-- Sidebar Message -->
                 <div class="sidebar-card d-none d-lg-flex">
                     <img class="sidebar-card-illustration mb-2" src="{% static 'contracts/img/logo.png' %}" alt="...">
-                    <p class="text-center mb-2"><strong>Système de Suivi des Marchés Publics</strong> a été mis en place par la Division Informatique du</p>
+                    <span class="text-center mb-2"><strong>Système de Suivi des Marchés Publics</strong> </span>
                     <a class="btn btn-success btn-sm" href="https://minepat.gov.cm">MINEPAT</a>
                 </div>
 
@@ -411,6 +411,7 @@
 
         <!-- Bootstrap core JavaScript-->
         <script src="{% static 'contracts/vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'contracts/vendor/jquery/jquery-3.5.1.js' %}"></script>
         <script src="{% static 'contracts/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
         <!-- Core plugin JavaScript-->
@@ -418,6 +419,7 @@
 
         <!-- Custom scripts for all pages-->
         <script src="{% static 'contracts/js/sb-admin-2.min.js' %}"></script>
+        <script src="{% static 'contracts/js/follow-datatable.js' %}"></script>
 
         <!-- Page level plugins -->
         <script src="{% static 'contracts/vendor/chart.js/Chart.min.js' %}"></script>
@@ -431,6 +433,7 @@
 
         <!-- Page level custom scripts -->
         <script src="{% static 'contracts/js/demo/datatables-demo.js' %}"></script>
+        <script src="{% static 'contracts/js/follow-datatable.js' %}"></script>
     </body>
 
 </html>

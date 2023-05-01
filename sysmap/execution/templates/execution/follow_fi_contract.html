@@ -1,0 +1,148 @@
+{% extends 'contracts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h2 class="h3 mb-0 text-gray-800"> SUIVI FINANCIER DU MARCHE </h2>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'contract-add-decompte' contract.id %}" class="btn btn-primary btn-block">Ajouter Décompte</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'follow-tech-contract' contract.id %}" class="btn btn-primary btn-block">Suivi Technique</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'contract-detail' contract.id %}" class="btn btn-primary btn-block">Détails du contrat</a>
+        </div> 
+
+        
+    </div>
+
+    <div class="row"> 
+        
+        <div class="col-sm-9">         
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5 class="m-0 font-weight-bold text-secondary">DETAIL DU SUIVI DE LA MISE EN OEUVRE </h5>
+                        </div>
+                    </div> 
+                </div>
+                <div class="card-body">
+                    
+                        
+                        <div class="table-responsive">
+                            <table class="display" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Date </th>
+                                        <th>Désignation</th>
+                                        <th>Montant</th>
+                                        <th>Taux</th>
+                                        <th>Paiement</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th>Date </th>
+                                        <th>Désignation</th>
+                                        <th>Montant</th>
+                                        <th>Taux</th>
+                                        <th>Paiement</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% if decomptes %}
+                                        {% for decompte in decomptes %}
+                                        <tr>
+                                            <td><a href="{% url 'decompte-detail' decompte.id %}">
+                                                <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                            <td>{{ decompte.datDecompte }}</td>
+                                            <td>{{ decompte.designation }}</td>
+                                            <td>{{ decompte.montant }}
+                                            </td>
+                                            <td>{{ decompte.txDecompte}}
+
+                                            </td>
+                                            <td>
+                                                {% if decompte in dico_paiements %} 
+                                                    {% for key, value in dico_paiements.items %} 
+                                                        {% if key == decompte %}
+                                                        <ul style="list-style-type: none; margin-top: 0; margin-bottom: 0;">
+                                                        <li class="nav-item dropdown">
+                                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                {{ value|length }}
+                                                            </a>
+                                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                                {% for paiement in decompte.paiement_set.all %}
+                                                                    <a class="dropdown-item" href="#">{{ paiement }}</a>
+                                                                {% endfor %}
+                                                            </div>
+                                                          </li>
+                                                        </ul>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %} 
+                                                    - 
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'contract-add-paiement' decompte.id %}">
+                                                    <i class="fa fa-plus"></i>
+                                                    </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            {% include "contracts/contract_summary.html" %}
+            
+        </div>
+    </div>
+</div>
+<!-- Event Modal-->
+<div class="modal fade" id="EventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Que voulez-vous ajouter à l'évènement? {{ event.libelle }}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Faites votre choix</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="#">Livrable</a>
+                <a class="btn btn-primary" href="#">Ordre de Service</a>
+                <a class="btn btn-primary" href="#">Avenant</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

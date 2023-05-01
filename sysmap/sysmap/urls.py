@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from contracts import views
 
-import authentication.views
+import authentication.views, execution.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,7 +33,17 @@ urlpatterns = [
     path('contract/<int:id>/amount', views.contract_amount, name='contract-add-amount'),
     path('contract/<int:id1>/<int:id2>/upd-amount', views.contract_upd_amount, name='contract-upd-amount'),
     path('contract/<int:id>/finance', views.contract_finance, name='contract-add-finance'),
-    path('contract/<int:id1>/<int:id2>upd-finance', views.contract_upd_finance, name='contract-upd-finance'),
+    path('contract/<int:id1>/<int:id2>/upd-finance', views.contract_upd_finance, name='contract-upd-finance'),
     path('contract/<int:id>/holder', views.contract_holder, name='contract-add-holder'),
     path('contract/<int:id>/commission', views.contract_commission, name='contract-add-commission'),
+    path('contract/<int:id>/follow-tech', execution.views.follow_tech_contract, name='follow-tech-contract'),
+    path('contract/<int:id>/follow-fi', execution.views.follow_fi_contract, name='follow-fi-contract'),
+    path('event/<int:id>/add-livrable', execution.views.create_livrable, name='event-add-livrable'),
+    path('contract/<int:id>/add-event', execution.views.create_event, name='suivi-add-event'),
+    path('event/<int:id>/add-ordre-service', execution.views.create_ordre_service, name='event-add-ordre-service'),
+    path('event/<int:id>/add-avenant', execution.views.create_avenant, name='event-add-avenant'),
+    path('event/<int:id>/event-detail', execution.views.event_detail, name='event-detail'),
+    path('contract/<int:id>/add-decompte', execution.views.create_decompte, name='contract-add-decompte'),
+    path('contract/<int:id>/add-paiement', execution.views.create_paiement, name='contract-add-paiement'),
+    path('contract/<int:id>/decompte-detail', execution.views.decompte_detail, name='decompte-detail'),
 ]

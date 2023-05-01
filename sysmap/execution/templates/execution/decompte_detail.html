@@ -1,0 +1,173 @@
+{% extends 'contracts/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Détail du décompte : <span class="text-success">{{ event.libelle }} le {{ event.dateEvent }}</span></h1>
+    </div>
+
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                               Livrables</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{ event.livrable_set.all.count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Annual) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Ordre de service</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{ event.ordre_service_set.all.count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Avenants
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">{{ event.avenant_set.all.count }}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Objet de contrat</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ event.contract.object }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-4">
+
+            <!-- Dropdown Card Example -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardExample1" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                <h6 class="m-0 font-weight-bold text-primary">Livrables</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardExample1">
+                <div class="card-body">
+                    {% for livrable in event.livrable_set.all %}
+                        <h6> Désignation: <span class="m-0 font-weight-bold text-primary">{{ livrable.libelle }}</span></h6>        
+                        <h6> Nature : <span class="m-0 font-weight-bold text-primary">{{ livrable.get_nature_display }}</span></h6>
+                        <h6> Type : <span class="m-0 font-weight-bold text-primary">{{ livrable.get_typeLivrable_display }}</span></h6>
+                        <h6> Réalisation effective ?: <span class="m-0 font-weight-bold text-primary">{{ livrable.isRealized|yesno }}</span></h6>
+                        <h6> Reception effective ?: <span class="m-0 font-weight-bold text-primary">{{ livrable.isReceive|yesno }}</span></h6>
+                        <h6> Date de validation: <span class="m-0 font-weight-bold text-primary">{{ livrable.datValidation }}</span></h6>
+                        <hr class="sidebar-divider">
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <!-- Collapsable Card Example -->
+            <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardExample2" class="d-block card-header py-3" data-toggle="collapse"
+                    role="button" aria-expanded="true" aria-controls="collapseCardExample2">
+                    <h6 class="m-0 font-weight-bold text-primary">Ordres de Service</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardExample2">
+                    <div class="card-body">
+                    {% for ordre_service in event.ordre_service_set.all %}
+                        <h6> Numéro: <span class="m-0 font-weight-bold text-primary">{{ ordre_service.numerOs }}</span></h6>
+                        
+                        <h6> Motif : <span class="m-0 font-weight-bold text-primary">{{ ordre_service.motifOs }}</span></h6>
+                       
+                        <h6> Date : <span class="m-0 font-weight-bold text-primary">{{ ordre_service.datOs }}</span></h6>
+                        
+                        <h6> Type : <span class="m-0 font-weight-bold text-primary">{{ ordre_service.get_typeOs_display }}</span></h6>
+                        <hr class="sidebar-divider">
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardExample3" class="d-block card-header py-3" data-toggle="collapse"
+                    role="button" aria-expanded="true" aria-controls="collapseCardExample3">
+                    <h6 class="m-0 font-weight-bold text-primary">Avenants</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardExample3">
+                    <div class="card-body">
+                        {% for avenant in event.avenant_set.all %}
+                            <h6> Objet: <span class="m-0 font-weight-bold text-primary">{{ avenant.objetAvenant }}</span></h6>
+                            
+                            <h6> Date : <span class="m-0 font-weight-bold text-primary">{{ avenant.dateAvenant }}</span></h6>
+                            {% if avenant.montant != None %}
+                                <h6> Montant : <span class="m-0 font-weight-bold text-primary">{{ avenant.montant }}</span></h6>
+                            {% endif %}
+                            
+                            <hr class="sidebar-divider">
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
