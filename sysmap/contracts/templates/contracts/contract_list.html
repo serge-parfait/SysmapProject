@@ -31,8 +31,12 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Moyenne des délais</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                            Montant Total des Contrats</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            {% if somme_montants %}
+                                                {{ somme_montants }} pour {{ compteur }}
+                                            {% endif %}                                            
+                                        </div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -48,11 +52,13 @@
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Lieu (majoritaire)
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Marchés sans titulaire
                                         </div>
                                         <div class="row no-gutters align-items-center">
                                             <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                    {{ holders_abs }}
+                                                </div>
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
@@ -78,8 +84,8 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            Type de marchés (majoritaire)</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                            Marchés sans infos sur financement</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ financeurs_abs}}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -93,7 +99,7 @@
                 <!-- Content Row -->
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Liste des Contrats/Marchés </h1>
-        <p class="mb-4">Cette liste ressort l'ensemble des contrats de la base de données pour l'exercice courant</p>
+        <p class="mb-4">Cette liste ressort l'ensemble des contrats de la base de données </p>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -113,48 +119,47 @@
                             <tr>
                                 <th>Numéro</th>
                                 <th>Objet</th>
-                                <th>Lieu</th>
-                                <th>Lot</th>
+                                <th>Titulaire</th>
+                                <th>Montant</th>
                                 <th>Délai</th>
                                 <th>Signé le</th>
-                                <th>Suivi</th>
+                                
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>Numéro</th>
                                 <th>Objet</th>
-                                <th>Lieu</th>
-                                <th>Lot</th>
+                                <th>Titulaire</th>
+                                <th>Montant</th>
                                 <th>Délai</th>
                                 <th>Signé le</th>
-                                <th>Suivi</th>
+                                
                             </tr>
                         </tfoot>
                         <tbody>
                             
                                 {% for contract in contracts %}
                                 <tr>
-                                    <td><a href="{% url 'contract-detail' contract.id %}">{{ contract.numero }} </a> </td>
-                                    <td>{{ contract.object }}</td>
-                                    <td>{{ contract.lieuLivraison }}</td>
-                                    <td>{{ contract.numLot }}</td>
-                                    <td>{{ contract.delays }}</td>
-                                    <td>{{ contract.datSignaMoa }}</td>
-                                    <td>
-                                        <a href="{% url 'follow-tech-contract' contract.id %}" class="btn btn-info btn-icon-split">
+                                    <td><a href="{% url 'contract-detail' contract.id %}" class="btn btn-info btn-icon-split">
                                             <span class="icon text-gray-100">
-                                                <i class="fas fa-arrow-right"></i>
+                                                <i class="fas fa-arrow-left"></i>
                                             </span>
-                                            <span class="text">Technique</span>
-                                        </a>
-                                        <a href="{% url 'follow-tech-contract' contract.id %}" class="btn btn-light btn-icon-split">
-                                            <span class="icon text-gray-600">
-                                                <i class="fas fa-arrow-right"></i>
-                                            </span>
-                                            <span class="text">Financier</span>
+                                            <span class="text">{{ contract.numero }}</span>
                                         </a>
                                     </td>
+                                    <td>{{ contract.object }}</td>
+                                    <td>{% if contract.holder %}
+                                            {{ contract.holder }} 
+                                        {% else %}- {% endif %}
+                                    </td>
+                                    <td>{% if contract.montant %}
+                                            {{ contract.montant.mtTtc }}
+                                            {% else %}- {% endif %}
+                                    </td>
+                                    <td>{{ contract.delays }}</td>
+                                    <td>{{ contract.datSignaMoa }}</td>
+                                    
                                 </tr>
                                 {% endfor %}
                         </tbody>

@@ -20,19 +20,30 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <h6> MODE PASSATION: <span class="m-0 font-weight-bold text-primary">{{ contract.get_typePassation_display }}</span></h6>
+                    <h6>CHAPITRE : <span class="m-0 font-weight-bold text-primary">{{ contract.chapitre }}</span></h6>
+                    <h6> <span class="m-0 font-weight-bold text-primary">{{ contract.get_typePassation_display }} N° {{ contract.numeroPassation }} </span></h6>
                     <!-- Divider -->
                     <hr class="sidebar-divider">
                     <h6> OBJET: <span class="m-0 font-weight-bold text-danger">{{ contract.object }}</span></h6>
                     <hr class="sidebar-divider">
-                    <h6> DELAI: <span class="m-0 font-weight-bold text-primary">{{ contract.delays }}</span></h6>
+                    <h6> DELAI: <span class="m-0 font-weight-bold text-primary">{{ contract.delays }} {{ contract.get_uniteDelai_display }}</span> 
+                         --    EXERCICES : <span class="m-0 font-weight-bold text-primary"> {% for exercice in contract.exercices.all %} {{ exercice }} {% endfor %}</span>
+                    </h6>
                     <hr class="sidebar-divider">
-                    <h6> LIEU: <span class="m-0 font-weight-bold text-primary">{{ contract.lieuLivraison }}</span></h6>
+                    <h6> 
+                        CONSISTANCE: <span class="m-0 font-weight-bold text-primary">{{ contract.consistancy }}</span>
+        
+                    </h6>
+                    LIEU : <span class="m-0 font-weight-bold text-primary">{{ contract.lieuLivraison }}</span>
+                    {% if contract.numLot > 0 %}
                     <hr class="sidebar-divider">
-                    <h6> CONSISTANCE: <span class="m-0 font-weight-bold text-primary">{{ contract.consistancy }}</span></h6>
+                    <h6> LOT: <span class="m-0 font-weight-bold text-primary">{{ contract.numLot }}</span></h6>
+                    {% endif %}
                     <hr class="sidebar-divider">
-                    <h6> NUMERO DU LOT: <span class="m-0 font-weight-bold text-primary">{{ contract.numLot }}</span></h6>
+                    <h6> EN PROCEDURE D'URGENCE ?: <span class="m-0 font-weight-bold text-primary">{{ contract.urgencyProcess|yesno:"OUI, NON" }}</span></h6>
                     <hr class="sidebar-divider">
                     <h6> CONTRAT ENREGISTRE?: <span class="m-0 font-weight-bold text-primary">{{ contract.storedTaxation|yesno:"OUI, NON" }}</span></h6>
+                    <hr class="sidebar-divider">
+                    <h6> CONTRAT A PRIX REVISE?: <span class="m-0 font-weight-bold text-primary">{{ contract.revisionPrice|yesno:"OUI, NON" }}</span></h6>
                 </div>
             </div>

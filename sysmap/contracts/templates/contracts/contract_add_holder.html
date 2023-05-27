@@ -11,26 +11,89 @@
         <div class="col-sm-4">
             {% include "contracts/contract_summary.html" %}
         </div>
-        <div class="col-sm-8">         
+        <div class="col-sm-4">         
             <!-- Basic Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <h6 class="m-0 font-weight-bold text-primary"> AJOUT DES INFORMATIONS SUR LE TITULAIRE DU MARCHE:</h6>
                     <form action="" method="POST" novalidate>
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>        
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.raisonSociale.errors }}</span>
+                                {{ form.raisonSociale.label }}
+                                {{ form.raisonSociale }} 
+                            </div>
+                           
+                           
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.representant.errors }}</span>
+                                {{ form.representant.label }}
+                                {{ form.representant }} 
+                            </div>
+          
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.poBox.errors }}</span>
+                                {{ form.poBox.label }}
+                                {{ form.poBox }} 
+                            </div>
+                         
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.phone.errors }}</span>
+                                {{ form.phone.label }}
+                                {{ form.phone }} 
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.numContribuable.errors }}</span>
+                                {{ form.numContribuable.label }}
+                                {{ form.numContribuable }} 
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.compteBancaire.errors }}</span>
+                                {{ form.compteBancaire.label }}
+                                {{ form.compteBancaire }} 
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-5">
+                                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+                            </div>
+                            
+                            <div class="col-sm-5">
+                                <a class="btn btn-secondary btn-block"
+                                    href="{% url 'contract-detail' contract.id %}">Annuler</a>
+                            </div> 
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="col-sm-4">
-    <p>
-        <a href="{% url 'contract-detail' contract.id %}" class="btn btn-primary btn-block">Retour à la fiche descriptive du contrat</a>
-    </p>
+        <div class="col-sm-4">
+            <p>
+                <a href="{% url 'contract-detail' contract.id %}" class="btn btn-primary btn-block">Retour à la fiche descriptive du contrat</a>
+            </p>
+            <p>
+                <a href="{% url 'contract-add-finance' contract.id %}" class="btn btn-primary btn-block">Ajouter Informations sur le Financement</a>
+            </p>
+            <p>
+                <a class="btn btn-primary btn-block" href="{% url 'contract-add-commission' contract.id %}">Ajouter informations sur la commission</a>
+            </p>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

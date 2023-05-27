@@ -3,52 +3,137 @@
 {% block content %}
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <!-- Page Heading -->
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-1">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
-
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-1">
-
+                </div>
+                <div class="col-lg-10">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">IDENTIFICATION DU CONTRAT</h1>
                         </div>
-                        <div class="col-lg-10">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">IDENTIFICATION</h1>
-                                </div>
-                                <div class="row"> 
-                                    <div class="col-sm-6">
-                                        <form action="" method="POST" novalidate>
-                                            {% csrf_token %}
-                                            {{ form.as_p }}
-                                            <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>        
-                                        </form>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form action="" method="POST" novalidate>
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <div class="col-sm-5 mb-3 mb-sm-0">
+                                            <span class="text-danger">{{ form.chapitre.errors }}</span>
+                                            {{ form.chapitre.label }}
+                                            {{ form.chapitre }} 
+                                        </div>
+                                        <div class="col-sm-4">
+                                          
+                                        </div>
+                                        <div class="col-sm-3">
+                                         
+                                        </div>
                                     </div>
-                            
-                                </div>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="{% url 'contract-list' %}">Annuler</a>
-                                </div>
-                                <div class="text-center">
-                                    <a class="small" href="{% url 'home' %}">Accueil</a>
-                                </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 mb-3 mb-sm-0">
+                                            <span class="text-danger">{{ form.typePassation.errors }}</span>
+                                               {{ form.typePassation }}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="text-danger">{{ form.numeroPassation.errors }}</span>
+                                            {{ form.numeroPassation }}
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <span class="text-danger">{{ form.numero.errors }}</span>
+                                            {{ form.numero }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="text-danger">{{ form.object.errors }}</span>
+                                        {{ form.object }}
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="text-danger">{{ form.consistancy.errors }}</span>
+                                        {{ form.consistancy }}
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <span class="text-danger">{{ form.lieuLivraison.errors }}</span>
+                                            {{ form.lieuLivraison }}
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="text-danger">{{ form.delays.label }}</span>
+                                            {{ form.delays }}
+                                        </div>
+                                        <div class="col-sm-3">
+
+                                            {{ form.uniteDelai }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                            <span class="text-danger">{{ form.revisionPrice.errors }}</span>
+                                            {{ form.revisionPrice.label }}
+                                            {{ form.revisionPrice }}
+                                            <hr>
+                                            <span class="text-danger">{{ form.storedTaxation.errors }}</span>
+                                            {{ form.storedTaxation.label }}
+                                            {{ form.storedTaxation }}
+                                            <hr>
+                                            {{ form.urgencyProcess.errors }}
+                                            {{ form.urgencyProcess.label }}
+                                            {{ form.urgencyProcess }}
+                                            
+                                        </div>
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                            <span class="text-danger">{{ form.numLot.errors }}</span>
+                                            {{ form.numLot.label }}
+                                            {{ form.numLot }}
+                                        </div>
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                            {{ form.exercices.errors }}
+                                            {{ form.exercices.label }}
+                                           {{ form.exercices }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                            {{ form.souscriptionDate.errors }}
+                                            {{ form.souscriptionDate.label }}
+                                            {{ form.souscriptionDate }}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="text-danger">{{ form.datSignaMoa.errors }} </span>
+                                            {{ form.datSignaMoa.label }}
+                                            {{ form.datSignaMoa }}
+                                        </div>
+                                        <div class="col-sm-4">
+
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <a class="btn btn-secondary btn-block"
+                                                href="{% url 'contract-list' %}">Annuler</a>
+                                        </div>
+                                    </div>
+
+
+                                </form>
                             </div>
+
                         </div>
-                        <div class="col-lg-1"></div>
+                        <hr>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
-</div>        
+</div>
 {% endblock %}

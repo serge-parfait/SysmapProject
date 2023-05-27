@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from contracts import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 import authentication.views, execution.views
 
@@ -47,3 +49,8 @@ urlpatterns = [
     path('contract/<int:id>/add-paiement', execution.views.create_paiement, name='contract-add-paiement'),
     path('contract/<int:id>/decompte-detail', execution.views.decompte_detail, name='decompte-detail'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root = settings.MEDIA_ROOT
+    )

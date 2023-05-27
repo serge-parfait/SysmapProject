@@ -11,29 +11,86 @@
         <div class="col-sm-4">
             {% include "contracts/contract_summary.html" %}
         </div>
-        <div class="col-sm-8">         
+        <div class="col-sm-4">         
             <!-- Basic Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <h6 class="m-0 font-weight-bold text-primary"> AJOUT MONTANT DU MARCHE:</h6>
                     <form action="" method="POST" novalidate>
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>        
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.mtHtax.errors }}</span>
+                                {{ form.mtHtax.label }}
+                                {{ form.mtHtax }} 
+                            </div>
+                           
+                           
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.mtTva.errors }}</span>
+                                {{ form.mtTva.label }}
+                                {{ form.mtTva }} 
+                            </div>
+          
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.mtAir.errors }}</span>
+                                {{ form.mtAir.label }}
+                                {{ form.mtAir }} 
+                            </div>
+                         
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.mtNet.errors }}</span>
+                                {{ form.mtNet.label }}
+                                {{ form.mtNet }} 
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <span class="text-danger">{{ form.mtTtc.errors }}</span>
+                                {{ form.mtTtc.label }}
+                                {{ form.mtTtc }} 
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <a class="btn btn-secondary btn-block"
+                                    href="{% url 'contract-detail' contract.id %}">Annuler</a>
+                            </div> 
+                        </div>
+       
                     </form>
                 </div>
             </div>
-
-           
         </div>
-
+        <div class="col-sm-4">
+            <p>
+                <a href="{% url 'contract-detail' contract.id %}" class="btn btn-primary btn-block">Retour à la fiche descriptive du contrat</a>
+            </p>
+            <p>
+                <a href="{% url 'contract-add-finance' contract.id %}" class="btn btn-primary btn-block">Ajouter Informations sur le Financement</a>
+            </p>
+            <p>
+                <a class="btn btn-primary btn-block" href="{% url 'contract-add-holder' contract.id %}">Ajouter informations sur le titulaire</a>
+            </p>
+            <p>
+                <a class="btn btn-primary btn-block" href="{% url 'contract-add-commission' contract.id %}">Ajouter informations sur la commission</a>
+            </p>
+        </div>
     </div>
 </div>
 
-<div class="col-sm-4">
-    <p>
-        <a href="{% url 'contract-detail' contract.id %}" class="btn btn-primary btn-block">Retour à la fiche descriptive du contrat</a>
-    </p>
-</div>
+
 
 {% endblock %}

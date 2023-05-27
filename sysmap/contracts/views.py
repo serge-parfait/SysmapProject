@@ -1,19 +1,71 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from contracts.models import Contract, Montant, Financement
-from contracts.forms import ContractForm, MontantForm, FinanceForm, HolderForm, CommissionForm
+from django.forms import formset_factory
+from contracts.models import Contract, Montant, Guichet
+from execution.models import Livrable, Decompte, Paiement, Event
+from contracts.forms import ContractForm, MontantForm, GuichetForm, HolderForm, MembersCommissionForm
 
 @login_required
 def welcome(request):
-    return render(request, 'contracts/welcome.html')
+    contracts = Contract.objects.all()
+    somme_montants = 0
+    compteur = 0
+    somme_livrable = 0
+    somme_decompte = 0
+    somme_paiement = 0
+    for contract in contracts:
+        if contract.montant:
+            somme_montants = somme_montants + contract.montant.mtTtc
+            compteur = compteur+1
+        events = Event.objects.filter(contract=contract)
+        for event in events:
+            livrables = Livrable.objects.filter(event=event)
+            if livrables:
+                somme_livrable = somme_livrable + livrables.count()
+        decomptes = Decompte.objects.filter(contract=contract)
+        if decomptes:
+            somme_decompte = somme_decompte + decomptes.count()
+            for decompte in decomptes:
+                paiements = Paiement.objects.filter(decompte=decompte)
+                if paiements:
+                    somme_paiement = somme_paiement + paiements.count()
+
+    context = {'contracts': contracts, 
+               'somme_montants': somme_montants, 
+               'compteur': compteur, 
+               'somme_livrable': somme_livrable,
+               'somme_decompte': somme_decompte,
+               'somme_paiement': somme_paiement,
+               }
+    return render(request, 'contracts/welcome.html', context=context)
 
 @login_required
 def contract_list(request):
     contracts = Contract.objects.all()
+    somme_montants = 0
+    compteur = 0
+    holders_abs = 0
+    financeurs_abs = 0
+    for contract in contracts:
+        if contract.montant:
+            somme_montants = somme_montants + contract.montant.mtTtc
+            compteur = compteur+1
+        if not contract.holder:
+            holders_abs = holders_abs +1
+        if not contract.financement:
+            financeurs_abs = financeurs_abs +1
+    
+    context = {'contracts': contracts, 
+               'somme_montants': somme_montants, 
+               'compteur': compteur, 
+               'holders_abs': holders_abs,
+               'financeurs_abs': financeurs_abs,
+               }
+
     return render(
         request,
         'contracts/contract_list.html',
-        {'contracts':contracts}
+        context=context
     )
 
 @login_required
@@ -40,7 +92,12 @@ def contract_create(request):
     if request.method == 'POST':
         form = ContractForm(request.POST)
         if form.is_valid():
-            contract = form.save()
+            contract = form.save(commit=False)
+            contract.authorCo = request.user
+            if request.user.role == "GESTION94":
+                contract.chapitre = "94"
+            contract.save()
+            form.save_m2m()
             return redirect('contract-detail', contract.id)
     else:
         form = ContractForm()
@@ -120,13 +177,13 @@ def contract_upd_amount(request, id1, id2):
 def contract_finance(request, id):
     contract = Contract.objects.get(id=id)
     if request.method == 'POST':
-        form = FinanceForm(request.POST)
+        form = GuichetForm(request.POST)
         if form.is_valid():
             contract.financement = form.save()
             contract.save()
             return redirect('contract-detail', contract.id)
     else:
-        form = FinanceForm()
+        form = GuichetForm()
     
     return render(request,
                   'contracts/contract_add_finance.html',
@@ -135,15 +192,15 @@ def contract_finance(request, id):
         
 @login_required
 def contract_upd_finance(request, id1, id2):
-    financement = Financement.objects.get(id=id1)
+    guichet = Guichet.objects.get(id=id1)
     contract = Contract.objects.get(id=id2)
     if request.method == 'POST':
-        form = FinanceForm(request.POST, instance=financement)
+        form = GuichetForm(request.POST, instance=guichet)
         if form.is_valid():
             form.save()
             return redirect('contract-detail', contract.id)
     else:
-        form = FinanceForm(instance=financement)
+        form = GuichetForm(instance=Guichet)
     
     return render(request,
                   'contracts/contract_upd_finance.html',
@@ -170,15 +227,20 @@ def contract_holder(request, id):
 @login_required
 def contract_commission(request, id):
     contract = Contract.objects.get(id=id)
+    commissionFormSet = formset_factory(MembersCommissionForm, extra=4)
     if request.method == 'POST':
-        form = CommissionForm(request.POST)
-        if form.is_valid:
-            contract.commission = form.save()
-            contract.save()
+       formset = commissionFormSet(request.POST)
+       if formset.is_valid:
+            for form in formset:
+                membersCommission = form.save(commit=False)
+                membersCommission.contract = contract
+                membersCommission.save()
+                contract.commission.add(membersCommission.commissionMember)
+                contract.save() 
             return redirect('contract-detail', contract.id)
     else:
-        form = CommissionForm()
+       formset = commissionFormSet()
 
     return render(request,
                   'Contracts/contract_add_commission.html',
-                  {'form': form, 'contract':contract})
+                  { 'contract':contract, 'formset':formset})

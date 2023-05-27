@@ -18,7 +18,7 @@
                     <h6 class="m-0 font-weight-bold text-primary"> AJOUT DES INFORMATIONS SUR LA COMMISSION DE RECETTE DU MARCHE:</h6>
                     <form action="" method="POST" novalidate>
                         {% csrf_token %}
-                        {{ form.as_p }}
+                        {{ formset.as_p }}
                         <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>        
                     </form>
                 </div>

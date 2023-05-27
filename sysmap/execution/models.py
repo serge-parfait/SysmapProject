@@ -1,10 +1,12 @@
 from django.db import models
+from django.conf import settings
 from contracts.models import Contract, Montant
 
 class Event(models.Model):
     libelle = models.fields.CharField(max_length=200)
     dateEvent = models.fields.DateField(null=True, blank=True)
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
+    authorEv = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         desc = str(self.libelle)+' du '+ str(self.dateEvent)
@@ -34,6 +36,7 @@ class Livrable(models.Model):
     isReceive = models.fields.BooleanField(default=False)
     datValidation = models.fields.DateField(blank=True, null=True)
     event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE)
+    authorLi = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.libelle)
@@ -55,6 +58,7 @@ class Avenant(models.Model):
     event = models.ForeignKey(Event, blank=True, null=True, on_delete=models.CASCADE)
     montant = models.ForeignKey(Montant, blank=True, on_delete=models.CASCADE)
     dateAvenant = models.fields.DateField(blank=True, null=True)
+    authorAv = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         desc = str(self.objetAvenant)+ ' du '+ str(self.dateAvenant)
@@ -72,6 +76,7 @@ class Ordre_Service(models.Model):
         TECHNIQUE = 'T'
         SUSPENSION_REPRISE = 'SR'
     typeOs = models.fields.CharField(max_length=2, choices=TypeOs.choices, default='D')
+    authorOs = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         desc = str(self.get_typeOs_display())+ ' pour '+ str(self.motifOs)
@@ -86,17 +91,23 @@ class Decompte(models.Model):
      datSignaIng = models.fields.DateField(null=True, blank=True)
      datSignaMoa = models.fields.DateField(null=True, blank=True)
      montant = models.ForeignKey(Montant, on_delete=models.CASCADE)
-     contract = models.ForeignKey(Contract, on_delete=models.CASCADE)     
+     contract = models.ForeignKey(Contract, on_delete=models.CASCADE)  
+     authorDe = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)   
 
 class Paiement(models.Model):
-    numBonEnga = models.fields.CharField(max_length=20)
+    numero = models.fields.CharField(max_length=20)
+    class ModEngagement(models.TextChoices):
+        BON_ENGAGEMENT = 'BON'
+        DECISION_ENGAGEMENT = 'DEC'
+    modEngagement = models.fields.CharField(choices=ModEngagement.choices, max_length=3, default="BON")
     datPaiement = models.fields.DateField(null=True, blank=True)
     class ModePaiement(models.TextChoices):
         VIREMENT = 'V'
         EN_ESPECES = 'E'
         INCONNU = 'I'
     modePaiement = models.fields.CharField(choices=ModePaiement.choices, max_length=2, default='I') 
-    decompte = models.ForeignKey(Decompte, on_delete=models.CASCADE)    
+    decompte = models.ForeignKey(Decompte, on_delete=models.CASCADE)
+    authorPa = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)    
     
     def __str__(self):
         desc = str(self.get_modePaiement_display())+ ' du bon Numéro '+ str(self.numBonEnga)

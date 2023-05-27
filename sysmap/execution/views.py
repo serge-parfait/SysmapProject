@@ -62,13 +62,14 @@ def create_event(request, id):
         if form.is_valid:
             event = form.save(commit=False)
             event.contract = contract
-            event = form.save()
+            event.authorEv = request.user
+            event.save()
             return redirect('follow-tech-contract', contract.id)
     else:
         form = EventForm()
 
     return render(request,
-                  'execution/suivi_add_event.html',
+                  'execution/contract_add_event.html',
                   {'form': form, 'contract':contract})
 
 @login_required
@@ -77,7 +78,9 @@ def create_livrable(request, id):
     if request.method == 'POST':
         form = LivrableForm(request.POST)
         if form.is_valid:
-            livrable = form.save()
+            livrable = form.save(commit=False)
+            livrable.authorLi = request.user
+            livrable.save()
             return redirect('follow-tech-contract', contract.id)
     else:
         form = LivrableForm()
@@ -94,7 +97,9 @@ def create_ordre_service(request, id):
     if request.method == 'POST':
         form = OrdreServiceForm(request.POST)
         if form.is_valid:
-            ordre_service = form.save()
+            ordre_service = form.save(commit=False)
+            ordre_service.authorOs = request.user
+            ordre_service.save()
             return redirect('follow-tech-contract', contract.id)
     else:
         form = OrdreServiceForm()
@@ -112,7 +117,9 @@ def create_avenant(request, id):
     if request.method == 'POST':
         form = AvenantForm(request.POST)
         if form.is_valid:
-            avenant = form.save()
+            avenant = form.save(commit=False)
+            avenant.authorAv = request.user
+            avenant.save()
             return redirect('follow-tech-contract', contract.id)
     else:
         form = AvenantForm()
@@ -139,7 +146,8 @@ def create_decompte(request, id):
         if form.is_valid:
             decompte = form.save(commit=False)
             decompte.contract = contract
-            decompte = form.save()
+            decompte.authorDe = request.user
+            decompte.save()
             return redirect('follow-fi-contract', contract.id)
     else:
         form = DecompteForm()
@@ -157,7 +165,8 @@ def create_paiement(request, id):
         if form.is_valid:
             paiement = form.save(commit=False)
             paiement.decompte = decompte
-            paiement = form.save()
+            paiement.authorPa = request.user
+            paiement.save()
             return redirect('follow-fi-contract', contract.id)
     else:
         form = PaiementForm()
