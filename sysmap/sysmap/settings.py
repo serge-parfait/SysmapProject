@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest-framework',
+    'rest_framework',
+    'rest_framework_simplejwt',
 	
 	'contracts',
     'authentication',
@@ -137,3 +138,8 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR.joinpath('media/')
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5,
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+}

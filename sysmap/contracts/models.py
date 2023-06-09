@@ -36,7 +36,7 @@ class Ressource(models.Model):
     code = models.fields.CharField(max_length=5, default="BIP")
     
     def __str__(self):
-        return str(self.imputation)
+        return str(self.source)
 
 class Guichet(models.Model):
     source = models.ForeignKey(Ressource, on_delete=models.CASCADE)
@@ -118,6 +118,12 @@ class Contract(models.Model):
         desc = str(self.object)
         return desc
 
+    def disable(self):
+        if self.actif is False:
+            return
+        self.actif = False
+        self.save()
+        
 
 class MembersCommission(models.Model):
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE)

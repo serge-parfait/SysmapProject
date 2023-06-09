@@ -1,9 +1,24 @@
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms import formset_factory
-from contracts.models import Contract, Montant, Guichet
+from contracts.models import Contract, Montant, Guichet, Holder
 from execution.models import Livrable, Decompte, Paiement, Event
 from contracts.forms import ContractForm, MontantForm, GuichetForm, HolderForm, MembersCommissionForm
+from contracts.permissions import IsCreatorAuthenticated
+
+from contracts.serializers import ContractDetailSerializer, ContractListSerializer, HolderSerializer
+
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
 
 @login_required
 def welcome(request):
@@ -244,3 +259,69 @@ def contract_commission(request, id):
     return render(request,
                   'Contracts/contract_add_commission.html',
                   { 'contract':contract, 'formset':formset})
+
+
+class MultipleSerializerMixin:
+    detail_serializer_class = None
+    def get_serializer_class(self):
+        if self.action == 'retrieve' and self.detail_serializer_class is not None:
+            return self.detail_serializer_class
+        return super().get_serializer_class()
+
+class ContractViewset(MultipleSerializerMixin, ModelViewSet):
+
+    serializer_class = ContractListSerializer
+    detail_serializer_class = ContractDetailSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Contract.objects.all()
+    
+    @action(detail=True, methods=['post'])
+    def disable(self, request, pk):
+        self.get_object().disable()
+        return Response()
+
+
+class HolderViewset(ModelViewSet):
+
+    serializer_class = HolderSerializer
+    permission_classes = [IsCreatorAuthenticated]
+
+    def get_queryset(self):
+        return Holder.objects.all()
+    
+def generate_pdf(request):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer, pagesize=letter, bottomup=0)
+    textobject = p.beginText()
+    textobject.setTextOrigin(inch, inch)
+    textobject.setFont("Helvetica", 14)
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    contracts = Contract.objects.all()
+
+    lines = []
+
+    for contract in contracts:
+        lines.append(contract.object)
+        lines.append (str(contract.delays))
+        lines.append(contract.numero)
+        lines.append(str(contract.datSignaMoa))
+        lines.append('###############################')
+
+    for line in lines:
+        textobject.textLine(line)
+    
+    p.drawText(textobject)
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="contracts.pdf")

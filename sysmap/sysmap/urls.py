@@ -14,15 +14,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from contracts import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework import routers
+from contracts.views import ContractViewset, HolderViewset
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 import authentication.views, execution.views
 
+router = routers.SimpleRouter()
+router.register('contracts', ContractViewset, basename='contract')
+router.register('holder', HolderViewset, basename='holder')
+
 urlpatterns = [
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     path('admin/', admin.site.urls),
+
     path('', authentication.views.login_page, name='login'),
     path('logout/', authentication.views.logout_user, name='logout'),
     path('welcome/', views.welcome, name='home'),
@@ -48,6 +62,7 @@ urlpatterns = [
     path('contract/<int:id>/add-decompte', execution.views.create_decompte, name='contract-add-decompte'),
     path('contract/<int:id>/add-paiement', execution.views.create_paiement, name='contract-add-paiement'),
     path('contract/<int:id>/decompte-detail', execution.views.decompte_detail, name='decompte-detail'),
+    path('contract/generate', views.generate_pdf, name='generate-pdf'),
 ]
 
 if settings.DEBUG:
